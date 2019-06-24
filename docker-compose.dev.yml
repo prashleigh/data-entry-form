@@ -1,0 +1,42 @@
+version: "3.7"
+
+services:
+  spa:
+    image: node:latest
+    ports:
+      - "${SPA_PORT:-3000}:3000"
+    volumes:
+      - "${PROJECT_LOCATION}:/usr/app"
+    working_dir: /usr/app
+    command: npm start
+  
+  api:
+    image: node:latest
+    ports:
+      - "${API_PORT:-8000}:8000"
+    volumes:
+      - "${PROJECT_LOCATION}:/usr/app"
+    working_dir: /usr/app
+    command: bash -c "./node_modules/.bin/nodemon --exec 'node -r dotenv/config' api/server.js dotenv_config_path=${DOTENV_CONFIG_PATH_FOR_API}"
+
+  db:
+    image: mongo:latest
+    ports:
+      - "27017:27017"
+    volumes:
+      - type: volume
+        source: dbdata-dev
+        target: /data/db
+      - type: bind
+        source: ${MONGOD_CONF_LOCATION}
+        target: /etc/mongod.conf
+  
+  playground:
+    image: node:latest
+    volumes:
+      - "${PROJECT_LOCATION}:/usr/app"
+    working_dir: /usr/app
+    command: bash -c "while :; do sleep 10; done"
+  
+volumes:
+  dbdata-dev:
