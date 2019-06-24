@@ -1,117 +1,45 @@
-.App {
-  text-align: center;
-}
 
-header {
-  background-color: #282c34;
-  min-height: 10vh;
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  font-size: calc(0.6em + 0.8vmax);
-  color: white;
-}
-
-header h1 {
-  flex: 2 1 0;
-
-  margin: 0;
-  padding: 0.3em;
-
-  font-size-adjust: 0.42;
-}
-
-header h1 a:hover {
-  text-decoration: none
-}
-
-header nav {
-  flex: 1 1 auto;
-
-  margin-right: 2vw;
-
-  text-align: right;
-}
-
-header nav a {
-  padding-left: 2vw;
-}
-
-a {
-  text-decoration: none;
-  color: #eeddee;
-}
-
-a:hover {
-  text-decoration: underline;
-}
-
-.data-pool, .dashboard, .edit-page {
-  width: 88vw;
-  margin: 0 auto;
+.loading {
+  width: min-content;
+  margin: calc((100vh - 2em - 30vh) / 2) auto 0 auto;
+  font-size: 2em;
 }
 
 .edit-page {
   min-width: 700px;
 
-  margin-top: 2em;
-  margin-bottom: 35px;
-
-  /* overflow-x: hidden; */
+  /**
+   * This is necessary due to a wonderful serious of unfortunate events.
+   * In MUI Controls, the made a tradeoff in the width of label elements in
+   * different states. In the unfilled, unfocused state, the width of the label
+   * element is set to 100%. However, when the state becomes filled or focused,
+   * then a CSS transform takes place with a scale(0.75). This makes the width
+   * of the label element effectively 75%. See URL.
+   *
+   * JSONForms (prior to any of the discussions in MUI Controls) "fixed" this
+   * issue be forcing the width of the label element to 125% (It actually 
+   * should have been 133.33% but that's an unsuprising mistake. Fractions
+   * are difficult). So when it was transformed became the "full" width of the
+   * containing element (once again, not quite because fractions). However,
+   * this introduces an issue in which the label element can extend beyond
+   * the containing element causing a horizontal scroll bar to appear. The 
+   * examples provided by JSONForms don't result in this issue being found.
+   *
+   * There's an "easy" solution which is to just hide the scrollbar on
+   * overflow, which CSS supports. However, another issue comes up. Control
+   * Groups in the UI Schema have a slight border that is snipped with just
+   * hiding overflow. This is fixed with the left/right padding.
+   */
+  padding: 0 2px;
+  overflow-x: hidden;
 }
 
-.table-head .table-row {
-  text-transform: capitalize;
-
-  font-size-adjust: 0.96;
-}
-
-.table-body .table-row:hover {
-  cursor: pointer;
-}
-
-.table-body .table-row .full-text {
-  display: none;
-}
-
-.table-body .table-row:hover .short-text {
-  display: none;
-}
-
-.table-body .table-row:hover .full-text {
-  display: inherit;
-}
 
 /* To make the array of objects display table more dense */
-.MuiTableCell-root-256 {
-  padding: 4px 10px 4px 10px !important;
+.edit-page table td {
+  /* padding: 4px 10px 4px 10px !important; */
 }
 
-.MuiInput-input-128 {
-  font-size: 0.8rem !important;
+input, textarea {
+  font-size: 0.9rem !important;
 }
-
-.footer {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
-.footer button {
-  flex: 0 0 14vw;
-  /* position: fixed; */
-  font-size: 1em;
-  /* color: white; */
-  /* width: 100%; */
-  height: 35px;
-  width: 15vw;
-  margin: 4vh 2vw 0 2vw;
-  /* background-color: #282c34; */
-  /* border-radius: 4px;  */
-}
-
-/* .footer button:hover { */
-  
-  /* background-color: #77797d; */
-  /* box-shadow: #282c34 2px 2px 2px; */
-/* } */

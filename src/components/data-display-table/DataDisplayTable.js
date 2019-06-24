@@ -42,7 +42,7 @@ class DataDisplayTable extends React.Component {
                                 hover={true}
                                 headers={this.props.headers}
                                 data={data}
-                                href={`${this.props.urlPrefix}${data.id}`}
+                                href={`${this.props.urlPrefix}${data._id}`}
                             />
                         )
                     })}

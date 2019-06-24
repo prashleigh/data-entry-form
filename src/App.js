@@ -1,35 +1,48 @@
 import React from 'react';
-import { connect } from 'react-redux';
-import { BrowserRouter, Link, Route } from 'react-router-dom';
-import idx from 'idx';
+import { Route, Switch } from 'react-router';
+import { Link as RouterLink } from 'react-router-dom';
+import { ConnectedRouter } from 'connected-react-router';
+import { 
+  AppBar,
+  Container,
+  Hidden,
+  Link,
+  Toolbar,
+  Typography
+} from '@material-ui/core';
+import MenuIcon from '@material-ui/icons/Menu';
+import { createMuiTheme, withStyles } from '@material-ui/core/styles';
 
-import { Actions } from './components/data-entry-form';
+import { history } from './configureStore';
 
-import DataPool from './components/data-pool/DataPool';
-import Dashboard from './dashboard/Dashboard';
-import EditPage from './edit-page/EditPage';
-import ProtectedRoute from './components/protected-route/ProtectedRoute';
+import DataEntryForm, { DataPool, EntryPage, EditPage } from './components/data-entry-form';
+import displayDate from './displayDate';
 
-import { ROLES } from './components/protected-route/Permissions';
+import './App.css';
 
-import './App.css'
-import AdminPage from './admin-page/AdminPage';
 
-import { startingData, schema, uischema } from './example';
 
-const mapStateToProps = state => {
-  return {
-    dataList: state.dataentryform.data
+const theme = createMuiTheme({});
+const styles = {
+  title: {
+    flexGrow: 1,
+    fontSize: '2.5rem',
+    lineHeight: '1.48',
+  },
+  appbarTitle: {
+    '&:hover': {
+      textDecoration: 'none'
+    }
+  },
+  appbarLink: {
+    flexBasis: '85px',
+    textAlign: 'center',
+    fontSize: '1.1rem'
   }
-}
-
-const mapDispatchToProps = dispatch => {
-  return {
-    initData: ({data, schema, uischema}) => dispatch(Actions.init(data, schema, uischema))
-  }
-}
+};
 
 class App extends React.Component {
+
   constructor(props) {
     super(props);
 
@@ -41,61 +54,127 @@ class App extends React.Component {
         },
         {
             key: "date",
-            label: "Date"
+            label: "Date",
+            render: displayDate
         },
         {
             key: "description",
             label: "Description"
         }
-      ]
+      ],
+      anchorEl: null
     }
   }
 
-  componentDidMount() {
-    this.props.initData({
-      data: startingData,
-      schema,
-      uischema
+  handleMenu(event) {
+    this.setState({
+      anchorEl: event.currentTarget
+    });
+  }
+
+  handleClose() {
+    this.setState({
+      anchorEl: null
     });
   }
 
   render() {
     return (
-      <BrowserRouter>
-        <header>
-          <h1><Link to="/">Mapping Violence</Link></h1>
-          <nav>
-            {/* <Link to="/">My Dashboard</Link> */}
-            <Link to="/">Database</Link>
-            {/* <Link to="/team">The Team</Link> */}
-            <Link to="/admin">Admin</Link>
-          </nav>
-        </header>
-        <DataPool
-          headers={this.state.headers}
-          dataList={this.props.dataList}
-          path="/"
-        >
-          <h1>Mapping Violence Database</h1>
-          <p>Below are all the entries ever created by the Mapping Violence team.</p>
-        </DataPool>
-        <Route
-          path="/entry/:id"
-          render={({ match }) => 
-            <EditPage
-              id={match.params.id}
-              data={idx(this, _ => _.props.dataList.find(data => data.id === match.params.id))}
-            />
-          }
-        />
-        <ProtectedRoute
-          path="/admin"
-          allowedRoles={[ROLES.ADMIN]}
-          render={(props) => <AdminPage />}
-        />
-      </BrowserRouter>
+      <ConnectedRouter history={history}>
+        <AppBar className={this.props.classes.appbar} position="static">
+          <Toolbar>
+            <Typography className={this.props.classes.title} variant="h1" noWrap>
+              <Link
+                color="inherit"
+                component={RouterLink}
+                to="/"
+                className={this.props.classes.appbarTitle}
+              >
+                Mapping Violence
+              </Link>
+            </Typography>
+            <Hidden smUp>
+              <MenuIcon></MenuIcon>
+            </Hidden>
+            <Hidden xsDown>
+              <Link
+                color="inherit"
+                component={RouterLink}
+                to="/"
+                className={this.props.classes.appbarLink}
+              >
+                Database
+              </Link>
+              <Link
+                color="inherit"
+                component={RouterLink}
+                to="/admin"
+                className={this.props.classes.appbarLink}
+              >
+                Admin
+              </Link>
+            </Hidden>
+          </Toolbar>
+        </AppBar>
+        <Container>
+          <DataEntryForm
+            dataUrl={process.env.REACT_APP_API_DATA_LOCATION}
+            schemaUrl={process.env.REACT_APP_API_SCHEMA_LOCATION}
+            uischemaUrl={process.env.REACT_APP_API_UI_SCHEMA_LOCATION}
+            render={(defProps) => (
+              <Switch>
+                <Route
+                  path="/"
+                  exact
+                  render={() => (
+                    <>
+                      <h1>Mapping Violence Database</h1>
+                      <p>Below are all the entries ever created by the Mapping Violence team.</p>
+                      <DataPool
+                        {...defProps}
+                        headers={this.state.headers}
+                      />
+                    </>
+                  )}
+                >
+                </Route>
+                <Route
+                  path="/entry/:id"
+                  exact
+                  render={({match}) => {
+                    const id = match.params.id;
+                    return (
+                      <EntryPage
+                        {...defProps}
+                        id={id}
+                      />
+                    );
+                  }}
+                />
+                <Route
+                  path="/entry/:id/edit"
+                  render={({match}) => {
+                    const id = match.params.id;
+                    return (
+                      <EditPage
+                        {...defProps}
+                        id={id}
+                      />
+                    );
+                  }}
+                />
+                {/* <ProtectedRoute
+                  path="/admin"
+                  allowedRoles={[ROLES.ADMIN]}
+                  render={(props) => <AdminPage />}
+                /> */}
+              </Switch>
+            )}
+          />
+          </Container>       
+      </ConnectedRouter>
     );
   }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(App);
+export default withStyles(styles)(App);

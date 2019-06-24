@@ -3,6 +3,8 @@ import TableCell from '@material-ui/core/TableCell';
 import TableRow from '@material-ui/core/TableRow';
 import { withRouter } from 'react-router-dom';
 
+import './TableRowAsLink.style.css';
+
 /**
  * Currently only supports displaying text in the cells.
  */
@@ -38,12 +40,13 @@ class TableRowAsLink extends React.Component {
                 {this.props.headers.map((header, i) => {
                     const length = this.state.length;
                     const cellData = this.props.data[header.key] || <em>Data Attribute Not Found</em>;
+                    const formattedCellData = header.render ? header.render(cellData) : cellData;
                     return (
                         <TableCell className={this.props.cellClassName} key={i}>
-                            <div className="short-text">
-                                {cellData.length > length ? `${cellData.slice(0, length - 3)}...` : cellData}
+                            <div className='table-row-as-link-short-text'>
+                                {formattedCellData.length > length ? `${formattedCellData.slice(0, length - 3)}...` : formattedCellData}
                             </div>
-                            <div className="full-text">{cellData}</div>
+                            <div className='table-row-as-link-full-text'>{formattedCellData}</div>
                         </TableCell>
                     )
                 })}

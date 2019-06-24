@@ -1,3 +1,53 @@
+## Building
+
+### build.sh
+
+Management of the environment 
+
+## Environment Variables
+
+Below is a list of environment variables that you need to set before developing or deploying the application. If you are a staffer with CDS, you can get the default values from Cailyn Hansen (cailyn_hansen \[AT\] alumni.brown.edu).
+
+Given issues with Docker Desktop (Windows/Mac) and accessing files between the host file system and the container systems, some of the environment variables must be set based on the specific location of the source code in your directory. In order to automatically generate these environment variables, there is a `build.sh` script that generates `.env[.*]` files.
+
+**If you need to change the defaults of the generated environment variables, change them in the `build.sh` script, NOT the generated `.env[.*]` files.**
+
+In order to prevent pollution of the environment variable name space on your local machine, there is a wrapper of the `docker-compose` command named `dc.sh`. This script sources all the relevant `.env[.*]` files in a separate bash environment and then invokes `docker-compose`. This allows us to use environment variables in the `docker-compose.yml` file.
+
+Okay, finally time for the list of environment variables, separated by the `.env[.*]` file they are located in:
+
+### .env.development.local
+
+These are the environment variables that are used during development that are dependent on the local machine.
+
+#### PROJECT_LOCATION
+
+`PROJECT_LOCATION` is the current working directory of the project. Given the issue mentioned above, if the files are located on a Windows/Mac host but symlinked from a directory in WSL 1, then the non-symlink path must be given. The `-P` flag in the `pwd -P` command resolves the symlink. You should not need to edit this.
+
+#### MONGOD_CONF_LOCATION
+
+`MONGOD_CONF_LOCATION` is the location of the Mongo configuation file. You shouldn't need to edit the environment variable. Instead, make changes directly to the configuration file included in this repository.
+
+#### SPA_PORT
+
+`SPA_PORT` is the port of the single page application (i.e. the data entry form). The default is 3001 but can be changed to whatever you please. Note: This is the port on the host machine, not the port in the application runs in the container. That is fixed to 3000 (there is no relationship between this value and the value you set for `SPA_PORT`).
+
+#### API_PORT
+
+`API_PORT` is the port of the API (i.e. the back-end). The default port is 8000 but can be changed to whatever you please. That is fixed to 8000 (there is no relationship between this value and the value you set for `API_PORT`).
+
+### .env.development
+
+These are the environment variables that are used during development that are the same across all local machines.
+
+#### REACT_APP_API_DATA_LOCATION
+
+#### REACT_APP_API_SCHEMA_LOCATION
+
+#### REACT_APP_API_UI_SCHEMA_LOCATION
+
+## README from create-react-app
+
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
 ## Available Scripts
