@@ -7,7 +7,9 @@ import { Prompt } from 'react-router-dom';
 import { JsonForms } from '@jsonforms/react';
 
 import { withStyles } from '@material-ui/styles';
-import Button from '@material-ui/core/Button'
+import Button from '@material-ui/core/Button';
+
+import Cookie from 'js-cookie';
 
 import { isEqual } from 'lodash';
 
@@ -16,7 +18,6 @@ import { changeEntry, saveEntry, setJsonformsData, changeLoading } from '../acti
 const styles = {
     footer: {
         marginTop: '25px',
-        marginBottom: '35px',
         textAlign: 'center'
     },
     button: {
@@ -38,7 +39,7 @@ const mapDispatchToProps = dispatch => {
     return {
         changeEntry: (id) => dispatch(changeEntry(id)),
         setJsonformsData: (data) => dispatch(setJsonformsData(data)),
-        saveEntry: (url, data) => dispatch(saveEntry(url, data)),
+        saveEntry: (url, data, userId) => dispatch(saveEntry(url, data, userId)),
         changeLoading: (isLoading, scrollX, scrollY) => dispatch(changeLoading(isLoading, scrollX, scrollY))
     };
 }
@@ -140,7 +141,7 @@ class EditPage extends React.Component {
                             className={this.props.classes.button}
                             color="secondary"
                             variant="contained"
-                            onClick={() => this.props.saveEntry(`${this.props.dataUrl}/${id}`, newData)}
+                            onClick={() => this.props.saveEntry(`${this.props.dataUrl}/${id}`, newData, Cookie.get('auth-token').split(':')[0])}
                         >
                             Save
                         </Button>

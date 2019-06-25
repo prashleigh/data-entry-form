@@ -60,6 +60,7 @@ const routes = [
             const id = req.params.id;
             const body = req.body;
             delete body._id;
+            body.metadata.lastEditedAt = new Date();
             const currentEntryVersion = await EntryVersion.execute(async (collection) => 
                 await collection.find({entry_id:ObjectId(id)}).limit(1).sort({version: -1}).next()
             );

@@ -80,12 +80,13 @@ const saveEntry = function* (action) {
     const payload = action.payload;
     const url = payload.url;
     const data = payload.data;
+    const userId = payload.userId;
     const scrollX = window.scrollX;
     const scrollY = window.scrollY + 60; // To account for the save message
     yield put(changeLoading(true));
     try {
         /** @TODO Determine if we need response */
-        yield call(() => API.updateEntry(url, data));
+        yield call(() => API.updateEntry(url, data, userId));
         yield put(saveEntrySuccess(data));
     } catch (err) {
         console.error(err);

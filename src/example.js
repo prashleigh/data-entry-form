@@ -441,7 +441,15 @@ const schema = {
             "type": "array",
             "items": {"type":"string"}
         },
-        "researcherNotes": {"type":"string"}
+        "researcherNotes": {"type":"string"},
+        "metadata": {
+            "type": "object",
+            "properties": {
+                "lastEditedBy": {
+                    "type": "string"
+                }
+            }
+        }
     },
     "required": ["id", "title", "description", "location", "latitude", "longitude"],
     "additionalProperties": false

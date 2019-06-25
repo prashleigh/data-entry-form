@@ -82,11 +82,12 @@ const makeEntry = (urlPrefix, url) => ({
 });
 
 
-const saveEntry = (url, data) => ({
+const saveEntry = (url, data, userId) => ({
     type: ActionTypes.SAVE_ENTRY,
     payload: {
         url,
-        data
+        data,
+        userId
     },
 });
 

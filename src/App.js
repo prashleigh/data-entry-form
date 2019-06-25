@@ -12,6 +12,7 @@ import {
 } from '@material-ui/core';
 import MenuIcon from '@material-ui/icons/Menu';
 import { createMuiTheme, withStyles } from '@material-ui/core/styles';
+import Cookies from 'js-cookie';
 
 import { history } from './configureStore';
 
@@ -19,8 +20,6 @@ import DataEntryForm, { DataPool, EntryPage, EditPage } from './components/data-
 import displayDate from './displayDate';
 
 import './App.css';
-
-
 
 const theme = createMuiTheme({});
 const styles = {
@@ -35,9 +34,14 @@ const styles = {
     }
   },
   appbarLink: {
-    flexBasis: '85px',
+    paddingRight: '25px',
     textAlign: 'center',
-    fontSize: '1.1rem'
+    fontSize: '1.1rem',
+    cursor: 'pointer'
+  },
+  container: {
+    padding: '0 40px',
+    marginBottom: '50px',
   }
 };
 
@@ -62,23 +66,44 @@ class App extends React.Component {
             label: "Description"
         }
       ],
-      anchorEl: null
     }
+
+    this.login = this.login.bind(this);
+    this.logout = this.logout.bind(this);
   }
 
-  handleMenu(event) {
-    this.setState({
-      anchorEl: event.currentTarget
+  async login() {
+    const userid = document.getElementById("userid").value;
+    const password = document.getElementById("password").value;
+    const token = `${userid}:${password}`;
+    await fetch("http://localhost:8000/login", {
+        method: "GET",
+        headers: {
+            "X-Auth-Token": token
+        }
+    }).then(response => {
+        if (response.status === 401 || response.status === 403) {
+            alert("Incorrect creditials")
+        } else {
+            Cookies.set('auth-token', token)
+            window.location = "/";
+        }
     });
   }
 
-  handleClose() {
-    this.setState({
-      anchorEl: null
-    });
+  logout() {
+    Cookies.remove('auth-token');
+    window.location = '/';
   }
 
   render() {
+    if (!this.props.user) {
+      return <>
+        User ID: <input id="userid" />
+        Password: <input id="password" type="password" />
+        <button onClick={this.login}>Submit</button>
+      </>
+    }
     return (
       <ConnectedRouter history={history}>
         <AppBar className={this.props.classes.appbar} position="static">
@@ -105,18 +130,25 @@ class App extends React.Component {
               >
                 Database
               </Link>
-              <Link
+              {/* <Link
                 color="inherit"
                 component={RouterLink}
                 to="/admin"
                 className={this.props.classes.appbarLink}
               >
                 Admin
+              </Link> */}
+              <Link
+                color="inherit"
+                className={this.props.classes.appbarLink}
+                onClick={this.logout}
+              >
+                Logout
               </Link>
             </Hidden>
           </Toolbar>
         </AppBar>
-        <Container>
+        <Container className={this.props.classes.container}>
           <DataEntryForm
             dataUrl={process.env.REACT_APP_API_DATA_LOCATION}
             schemaUrl={process.env.REACT_APP_API_SCHEMA_LOCATION}
@@ -168,6 +200,12 @@ class App extends React.Component {
                   allowedRoles={[ROLES.ADMIN]}
                   render={(props) => <AdminPage />}
                 /> */}
+                <Route
+                  path="/"
+                  render={() =>
+                    <div>We couldn't find this page</div>
+                  }
+                />
               </Switch>
             )}
           />

@@ -1,6 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { Provider } from 'react-redux';
+import Cookie from 'js-cookie';
 import configureStore from './configureStore';
 import * as serviceWorker from './serviceWorker';
 
@@ -15,11 +16,17 @@ import App from './App';
 const store = configureStore();
 window.store = store;
 
+let user = null;
+const auth = Cookie.get('auth-token');
+if (auth) {
+    user = auth.split(":")[0];
+}
+
 ReactDOM.render(
     <Provider store={store}>
         <ThemeProvider theme={theme}>
             <CssBaseline />
-            <App />
+            <App user={user} />
         </ThemeProvider>
     </Provider>,
     document.getElementById('root')
