@@ -76,7 +76,7 @@ class App extends React.Component {
     const userid = document.getElementById("userid").value;
     const password = document.getElementById("password").value;
     const token = `${userid}:${password}`;
-    await fetch("http://localhost:8000/login", {
+    await fetch("http://api.mappingviolence.org/login", {
         method: "GET",
         headers: {
             "X-Auth-Token": token
