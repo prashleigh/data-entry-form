@@ -9,6 +9,11 @@ services:
       - "${PROJECT_LOCATION}:/usr/app"
     working_dir: /usr/app
     command: npm start
+    netowrks:
+      map:
+        aliases:
+          - spa
+
   
   api:
     image: node:latest
@@ -18,6 +23,10 @@ services:
       - "${PROJECT_LOCATION}:/usr/app"
     working_dir: /usr/app
     command: bash -c "npm install && ./node_modules/.bin/nodemon --exec 'node -r dotenv/config' api/server.js dotenv_config_path=${DOTENV_CONFIG_PATH_FOR_API}"
+    netowrks:
+      map:
+        aliases:
+          - api
 
   db:
     image: mongo:latest
@@ -26,6 +35,10 @@ services:
     volumes:
       - "dbdata-dev:/data/db"
       - "${MONGOD_CONF_LOCATION}:/etc/mongod.conf"
+    netowrks:
+      map:
+        aliases:
+          - db
   
   playground:
     image: node:latest
@@ -33,6 +46,13 @@ services:
       - "${PROJECT_LOCATION}:/usr/app"
     working_dir: /usr/app
     command: bash -c "while :; do sleep 10; done"
+    netowrks:
+      map:
+        aliases:
+          - playground
   
 volumes:
   dbdata-dev:
+
+networks:
+  map:
