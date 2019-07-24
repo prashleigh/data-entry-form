@@ -17,19 +17,15 @@ services:
     volumes:
       - "${PROJECT_LOCATION}:/usr/app"
     working_dir: /usr/app
-    command: bash -c "./node_modules/.bin/nodemon --exec 'node -r dotenv/config' api/server.js dotenv_config_path=${DOTENV_CONFIG_PATH_FOR_API}"
+    command: bash -c "npm install && ./node_modules/.bin/nodemon --exec 'node -r dotenv/config' api/server.js dotenv_config_path=${DOTENV_CONFIG_PATH_FOR_API}"
 
   db:
     image: mongo:latest
     ports:
       - "27017:27017"
     volumes:
-      - type: volume
-        source: dbdata-dev
-        target: /data/db
-      - type: bind
-        source: ${MONGOD_CONF_LOCATION}
-        target: /etc/mongod.conf
+      - "dbdata-dev:/data/db"
+      - "${MONGOD_CONF_LOCATION}:/etc/mongod.conf"
   
   playground:
     image: node:latest

@@ -19,7 +19,7 @@ PROJECT_LOCATION=$(pwd -P)
 MONGOD_CONF_LOCATION=$(pwd -P)/mongod.conf
 DOTENV_CONFIG_PATH_FOR_API=.env
 
-SPA_PORT=3001
+SPA_PORT=3000
 API_PORT=8000
 
 cat >> .env.development.local << EOF
@@ -43,9 +43,16 @@ else
 fi
 
 # These URLs should NOT have trailing slashes
-REACT_APP_API_DATA_LOCATION=http://localhost:8000/api/entry
-REACT_APP_API_SCHEMA_LOCATION=http://localhost:8000/api/schema
-REACT_APP_API_UI_SCHEMA_LOCATION=http://localhost:8000/api/uischema
+if [ "$1" = "dev-test" ]
+then
+    REACT_APP_API_DATA_LOCATION=http://localhost:8000/api/entry
+    REACT_APP_API_SCHEMA_LOCATION=http://localhost:8000/api/schema
+    REACT_APP_API_UI_SCHEMA_LOCATION=http://localhost:8000/api/uischema
+else
+    REACT_APP_API_DATA_LOCATION=http://api.mappingviolence.org/api/entry
+    REACT_APP_API_SCHEMA_LOCATION=http://api.mappingviolence.org/api/schema
+    REACT_APP_API_UI_SCHEMA_LOCATION=http://api.mappingviolence.org/api/uischema
+fi
 
 cat >> .env.development << EOF
 $DO_NOT_EDIT_LINE
