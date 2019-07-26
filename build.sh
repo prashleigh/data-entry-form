@@ -48,10 +48,12 @@ then
     REACT_APP_API_DATA_LOCATION=http://localhost:8000/api/entry
     REACT_APP_API_SCHEMA_LOCATION=http://localhost:8000/api/schema
     REACT_APP_API_UI_SCHEMA_LOCATION=http://localhost:8000/api/uischema
+    REACT_APP_API_LOGIN_LOCATION=http://localhost:8000/login
 else
     REACT_APP_API_DATA_LOCATION=http://api.mappingviolence.org/api/entry
     REACT_APP_API_SCHEMA_LOCATION=http://api.mappingviolence.org/api/schema
     REACT_APP_API_UI_SCHEMA_LOCATION=http://api.mappingviolence.org/api/uischema
+    REACT_APP_API_LOGIN_LOCATION=http://api.mappingviolence.org/login
 fi
 
 cat >> .env.development << EOF
