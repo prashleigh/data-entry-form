@@ -1,15 +1,15 @@
-version: "3.7"
+version: "2.0"
 
 services:
   spa:
     image: node:latest
     ports:
-      - "${SPA_PORT:-3000}:3000"
+      - "${SPA_PORT}:3000"
     volumes:
       - "${PROJECT_LOCATION}:/usr/app"
     working_dir: /usr/app
     command: npm start
-    netowrks:
+    networks:
       map:
         aliases:
           - spa
@@ -18,12 +18,12 @@ services:
   api:
     image: node:latest
     ports:
-      - "${API_PORT:-8000}:8000"
+      - "${API_PORT}:8000"
     volumes:
       - "${PROJECT_LOCATION}:/usr/app"
     working_dir: /usr/app
     command: bash -c "npm install && ./node_modules/.bin/nodemon --exec 'node -r dotenv/config' api/server.js dotenv_config_path=${DOTENV_CONFIG_PATH_FOR_API}"
-    netowrks:
+    networks:
       map:
         aliases:
           - api
@@ -35,7 +35,7 @@ services:
     volumes:
       - "dbdata-dev:/data/db"
       - "${MONGOD_CONF_LOCATION}:/etc/mongod.conf"
-    netowrks:
+    networks:
       map:
         aliases:
           - db
@@ -46,7 +46,7 @@ services:
       - "${PROJECT_LOCATION}:/usr/app"
     working_dir: /usr/app
     command: bash -c "while :; do sleep 10; done"
-    netowrks:
+    networks:
       map:
         aliases:
           - playground
