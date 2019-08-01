@@ -85,7 +85,8 @@ class App extends React.Component {
         if (response.status === 401 || response.status === 403) {
             alert("Incorrect creditials")
         } else {
-            Cookies.set('auth-token', token)
+            Cookies.remote('auth-token');
+            Cookies.set('auth-token', token, {domain: "mappingviolence.org"})
             window.location = "/";
         }
     });

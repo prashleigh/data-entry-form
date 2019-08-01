@@ -12,6 +12,7 @@ class DataDisplayTable extends React.Component {
         bodyClassName: 'table-body',
         rowClassName: 'table-row',
         cellClassName: 'table-cell',
+        dataList: []
     }
 
     componentDidMount() {
@@ -33,7 +34,8 @@ class DataDisplayTable extends React.Component {
                     </TableRow>
                 </TableHead>
                 <TableBody className={this.props.bodyClassName}>
-                    {this.props.dataList.map((data, i) => {
+{console.log(this.props.dataList)}
+                    {this.props.dataList && this.props.dataList.map((data, i) => {
                         return (
                             <TableRowAsLink
                                 rowClassName={this.props.rowClassName}

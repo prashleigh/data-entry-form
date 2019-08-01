@@ -93,8 +93,9 @@ class EntryPage extends React.Component {
                         <TableRow
                             key={i}
                         >
-                            {Object.values(obj).map((data, j) => {
+                            {keys.map((key, j) => {
                                 let formattedData;
+                                let data = list[i][key];
                                 if (Array.isArray(data)) {
                                     formattedData = data.join(', ');
                                 } else {
@@ -160,12 +161,12 @@ class EntryPage extends React.Component {
                     <hr />
                     <h2>Sources</h2>
                     <h3>Primary Sources</h3>
-                    {data.primarySources ? data.primarySources.map(source => 
-                        <p class="MARKDOWN">{source}</p>
+                    {data.primarySources ? data.primarySources.map((source, i) => 
+                        <p key={i} className="MARKDOWN">{source}</p>
                     ) : <p>No sources</p>}
                     <h3>Secondary Sources</h3>
-                    {data.secondarySources ? data.secondarySources.map(source => 
-                        <p class="MARKDOWN">{source}</p>
+                    {data.secondarySources ? data.secondarySources.map((source, i) => 
+                        <p key={i} className="MARKDOWN">{source}</p>
                     ) : <p>No sources</p>}
                     <h2>Researcher Notes</h2>
                     <p>{data.researcherNotes || <em>Not provided</em>}</p>

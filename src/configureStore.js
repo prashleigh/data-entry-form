@@ -10,7 +10,7 @@ import { rootSaga as dataentryformRootSaga } from './components/data-entry-form'
 /**
  * Allow intergration with Redux Dev Tools
  */
-const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__(
+const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ && window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__(
     { trace: true, traceLimit: 25 }
 ) || compose;
 

@@ -6,10 +6,10 @@ tr .table-row-as-link-full-text {
     display: none;
 }
     
-tr:hover .table-row-as-link-short-text {
+/* tr:hover .table-row-as-link-short-text {
     display: none;
 }
     
 tr:hover .table-row-as-link-full-text {
     display: inherit;
-}
+} */
