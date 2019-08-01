@@ -64,4 +64,4 @@ const router = express.Router();
 Entry.useRoutes(router);
 app.use('/api', router);
 
-app.listen(Constants.API_PORT, () => console.log(`App listening on port ${Constants.API_PORT}!`));
+app.listen(Constants.API_PORT, () => console.log(`App is listening on port ${Constants.API_PORT}!`));

@@ -1,4 +1,4 @@
-version: "3.7"
+version: "2.0"
 
 services:
   spa:
@@ -7,7 +7,7 @@ services:
     env_file:
       - /etc/mappingviolence/spa/.env
     networks:
-      - main
+      - map
   
   api:
     build:
@@ -15,7 +15,7 @@ services:
     env_file:
       - /etc/mappingviolence/api/.env
     networks:
-      - main
+      - map
   
   db:
     image: mongo:latest
@@ -24,25 +24,16 @@ services:
         source: dbdata
         target: /data/db
     networks:
-      - main
-
-  proxy:
-    image: nginx:latest
-    volumes:
-      - type: bind
-        source: ${NGINX_CONF}
-        target: /etc/nginx/nginx.conf
-    networks:
-      - main
+      - map
 
   test:
     image: ubuntu:latest
     networks:
-      - main
+      - map
     command: bash -c "while :; do sleep 10; done"
   
 volumes:
   dbdata:
 
 networks:
-  main:
+  map:
