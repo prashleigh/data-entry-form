@@ -2,14 +2,14 @@ version: "2.0"
 
 services:
   spa:
-    image: map-spa
+    image: cailyncodes/mappingviolence:spa-1.0.0
     ports:
       - 3001:80
     networks:
       - map
   
   api:
-    image: map-api
+    image: cailyncodes/mappingviolence:api-1.0.0
     networks:
       - map
   
