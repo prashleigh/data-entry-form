@@ -1,2 +1,13 @@
-node_modules
+# Git
+.git
+
+# Runtime dependencies
+node_modules/
 npm-debug.log
+
+# Development files
+docker-compose.dev.yml
+.env.development
+.env.development.local
+README.md
+dc.sh

@@ -2,27 +2,21 @@ version: "2.0"
 
 services:
   spa:
-    build:
-      context: ./src
-    env_file:
-      - /etc/mappingviolence/spa/.env
+    image: map-spa
+    ports:
+      - 3001:80
     networks:
       - map
   
   api:
-    build:
-      context: ./api
-    env_file:
-      - /etc/mappingviolence/api/.env
+    image: map-api
     networks:
       - map
   
   db:
     image: mongo:latest
     volumes:
-      - type: volume
-        source: dbdata
-        target: /data/db
+      - "dbdata:/data/db"
     networks:
       - map
 

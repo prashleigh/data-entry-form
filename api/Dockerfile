@@ -6,7 +6,12 @@ EXPOSE 8001
 
 WORKDIR /usr/app/src
 
-COPY package*.json .
+COPY build.sh .
+COPY .env* ./
+
+RUN ./build.sh
+
+COPY ./package*.json ./
 
 RUN npm install
 

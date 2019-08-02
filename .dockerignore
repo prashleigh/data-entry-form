@@ -1,1 +1,16 @@
-# TODO
+# Git
+.git
+
+# Runtime dependencies
+node_modules/
+
+# Development files
+docker-compose.dev.yml
+.env.development
+.env.development.local
+README.md
+dc.sh
+
+# Other project files
+data/
+api/

@@ -2,17 +2,22 @@ FROM node:latest as builder
 
 WORKDIR /usr/app/src
 
-COPY package*.json .
+COPY package*.json ./
 
 RUN npm install
 
 COPY . .
 
-RUN npm run build
+RUN ./build.sh && \
+    npm run build
 
 FROM nginx:latest
 
-EXPOSE 3001
+EXPOSE 80
+
+COPY ./conf.d /etc/nginx/conf.d
+
+RUN rm /etc/nginx/conf.d/default.conf
 
 WORKDIR /var/www
 
