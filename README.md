@@ -1,8 +1,27 @@
+# Mapping Violence Data Applications
+
 ## Building
 
 ### build.sh
 
-Management of the environment 
+Management of the environment variables that can be automatically set. See below for more information.
+
+## Running
+
+All of the services are managed in Docker containers and orchestrated with Docker Compose. A wrapper is used to source environment variables.
+
+### Development
+
+`./dc.sh -f docker-compose.dev.yml up -d --build` will build the containers and run them. Connect to `http://localhost:[SPA_PORT]` (see below for information on `SPA_PORT`) in the web browser to see the application.
+
+### Production
+
+The images need to be build before the following command can be run. To build the Docker images, run:
+
+* `cd api; docker build -t [IMAGE_NAME:IMAGE_TAG] .`
+* `cd ..; docker build -t [IMAGE_NAME:IMAGE_TAG] .`
+
+`./dc.sh up -d` will start and run the containers. Connect to `http://data.mappingviolence.org) in the web browser to see the application.
 
 ## Environment Variables
 
@@ -16,7 +35,7 @@ In order to prevent pollution of the environment variable name space on your loc
 
 Okay, finally time for the list of environment variables, separated by the `.env[.*]` file they are located in:
 
-### .env.development.local
+### .env.[development|production].local
 
 These are the environment variables that are used during development that are dependent on the local machine.
 
@@ -28,6 +47,10 @@ These are the environment variables that are used during development that are de
 
 `MONGOD_CONF_LOCATION` is the location of the Mongo configuation file. You shouldn't need to edit the environment variable. Instead, make changes directly to the configuration file included in this repository.
 
+#### DOTENV_CONFIG_PATH_FOR_APT
+
+`DOTENV_CONFIG_PATH_FOR_APT` specifies what `.env` file is to be used for the environment variables for the API.
+
 #### SPA_PORT
 
 `SPA_PORT` is the port of the single page application (i.e. the data entry form). The default is 3001 but can be changed to whatever you please. Note: This is the port on the host machine, not the port in the application runs in the container. That is fixed to 3000 (there is no relationship between this value and the value you set for `SPA_PORT`).
@@ -36,15 +59,45 @@ These are the environment variables that are used during development that are de
 
 `API_PORT` is the port of the API (i.e. the back-end). The default port is 8000 but can be changed to whatever you please. That is fixed to 8000 (there is no relationship between this value and the value you set for `API_PORT`).
 
-### .env.development
+### .env.[development|production]
 
 These are the environment variables that are used during development that are the same across all local machines.
 
 #### REACT_APP_API_DATA_LOCATION
 
+`REACT_APP_API_DATA_LOCATION` is the endpoint location for accessing the data from the API.
+
 #### REACT_APP_API_SCHEMA_LOCATION
 
+`REACT_APP_API_SCHEMA_LOCATION` is the endpoint location for accessing the Form Schema. Currently, no used.
+
 #### REACT_APP_API_UI_SCHEMA_LOCATION
+
+`REACT_APP_API_UI_SCHEMA_LOCATION` is the endpoint location for accessing the Form UI Schema. Currently, not used.
+
+#### REACT_APP_API_LOGIN_LOCATION
+REACT_APP_API_LOGIN_LOCATION
+`REACT_APP_API_DATA_LOCATION` ins the endpoint location for login.
+
+#### DB_URL
+
+`DB_URL` is the URL for connecting to the database.
+
+#### DB_NAME
+
+`DB_NAME` is the name of the database for this project.
+
+#### ENTRY_COLLECTION
+
+`ENTRY_COLLECTION` is the name of the collection that stores the entries.
+
+#### ENTRY_VERSION_COLLECTION
+
+`ENTRY_VERSION_COLLECTION` is the name of the collection that stores the entry versions.
+
+### .env
+
+See [https://docs.google.com/document/d/158HyXRxzP5vcKxXPCj8h_EhyQ2jqMZRml5cX7CEzaVA/edit](https://docs.google.com/document/d/158HyXRxzP5vcKxXPCj8h_EhyQ2jqMZRml5cX7CEzaVA/edit).
 
 ## README from create-react-app
 
