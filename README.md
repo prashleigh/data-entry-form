@@ -16,12 +16,12 @@ All of the services are managed in Docker containers and orchestrated with Docke
 
 ### Production
 
-The images need to be build before the following command can be run. To build the Docker images, run:
+The images need to be built before the following command can be run. To build the Docker images, run:
 
 * `cd api; docker build -t [IMAGE_NAME:IMAGE_TAG] .`
 * `cd ..; docker build -t [IMAGE_NAME:IMAGE_TAG] .`
 
-`./dc.sh up -d` will start and run the containers. Connect to `http://data.mappingviolence.org) in the web browser to see the application.
+`./dc.sh up -d` will start and run the containers. Connect to <http://data.mappingviolence.org> in the web browser to see the application.
 
 ## Environment Variables
 
